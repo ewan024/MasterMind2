@@ -48,8 +48,8 @@ public class MasterMind2 {
         //code generator
 
         for (i = 0; i < codeLength; i++) {
-            randomLetter = r.nextInt(colors.size());
-            secretCode = secretCode + colors.get(randomLetter);
+            randomLetter = r.nextInt(colors.length);
+            secretCode += colors[randomLetter];
         }
 
         //shows code if name is Admin
@@ -130,8 +130,11 @@ public class MasterMind2 {
                 //checks if code has ONLY valid letter pt. 2
                 else {
                     wrongInput = true;
-                    System.out.println("\r\nERROR\r\n" +
-                            "Please Enter Valid Letters!\r\n");
+                    System.out.println("""
+                            \r
+                            ERROR\r
+                            Please Enter Valid Letters!\r
+                            """);
                     i--;
                     continue outerLoop;
                 }
