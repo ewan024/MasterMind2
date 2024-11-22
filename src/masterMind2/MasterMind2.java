@@ -30,21 +30,16 @@ public class MasterMind2 {
         Scanner sc = new Scanner(System.in);
         Random r = new Random();
 
-        //the (string) array list for the colors
+        //the (string) array for the colors
 
-        ArrayList<String> colors = new ArrayList<>();
-        colors.add("R");
-        colors.add("G");
-        colors.add("B");
-        colors.add("Y");
-        colors.add("P");
-        colors.add("O");
-        colors.add("C");
+        String[] colors = {"R", "G", "B", "Y", "P", "O", "C"};
 
         //welcome message
 
-        System.out.println("Welcome To MasterMind!\r\n" +
-                "Please... (drumroll.mp3) Enter Your Name Down Below!\r\n");
+        System.out.println("""
+                Welcome To MasterMind!\r
+                Please... (drumroll.mp3) Enter Your Name Down Below!\r
+                """);
 
         //player enters name
 
@@ -74,7 +69,7 @@ public class MasterMind2 {
             //the amount of guesses left message
 
             System.out.println("\r\nGuess: " + (i + 1) + "/10\r\n" +
-                    "Please Choose Out Of Any Of The Following Colors: \r\n" + colors);
+                    "Please Choose Out Of Any Of The Following Colors: \r\n" + Arrays.toString(colors));
             userCode = sc.nextLine();
 
             //validates lowercase input
@@ -111,7 +106,7 @@ public class MasterMind2 {
 
                 //checks if code has ONLY valid letter pt. 1
 
-                if (colors.contains(bobTheCharacter)) {
+                if (Arrays.asList(colors).contains(bobTheCharacter)) {
 
                     //checks if user code if in the right place and the right character
 
