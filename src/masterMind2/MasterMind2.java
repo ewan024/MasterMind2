@@ -18,7 +18,7 @@ public class MasterMind2 {
         int i;
         int i2;
         int randomLetter;
-        int guesses = 100;
+        int guesses = 10;
         int codeLength = 4;
 
         //booleans
