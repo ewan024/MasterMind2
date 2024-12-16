@@ -14,8 +14,9 @@ public class MasterMind2 {
         //integers
         int i;
         int i2;
-        int guesses = 10;
+        int guesses = 999999999;
         int codeLength = 4;
+        int x = 0;
 
         //booleans
         boolean wrongInput = false;
@@ -29,6 +30,9 @@ public class MasterMind2 {
 
         //functions
         Generator gen = new Generator();
+        Guesser guesser = new Guesser();
+
+        //code generator
         StringBuilder secretCode = gen.getLetter(colors, codeLength);
 
         //welcome message
@@ -38,10 +42,10 @@ public class MasterMind2 {
                 """);
 
         //player enters name
-        name = sc.nextLine();
+        name = "e";
 
         //shows code if name is Admin
-        if (name.equals("Admin")) {
+        if (name.equals("Admin") || name.equals("admin")) {
             System.out.println(secretCode);
         }
 
@@ -52,9 +56,22 @@ public class MasterMind2 {
         outerLoop: for (i = 0; i < guesses; i++) {
 
             //the amount of guesses left message
-            System.out.println("\r\nGuess: " + (i + 1) + "/10\r\n" +
+            System.out.println("\r\nGuess: " + (i + 1) + "/" + guesses + "\r\n" +
                     "Please Choose Out Of Any Of The Following Colors: \r\n" + Arrays.toString(colors));
-            userCode = sc.nextLine();
+            //userCode = sc.nextLine();
+
+            //computer guesses
+            userCode = String.valueOf(guesser.guess(colors, codeLength));
+            System.out.println(userCode);
+
+            try {
+                // Pause for 10 milliseconds
+                Thread.sleep(0);
+            } catch (InterruptedException e) {
+                System.err.println("Thread interrupted: " + e.getMessage());
+                // Optionally exit the loop if needed
+                break;
+            }
 
             //validates lowercase input
             userCode = userCode.toUpperCase();
