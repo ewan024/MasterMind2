@@ -7,33 +7,26 @@ public class MasterMind2 {
 
         //strings
         String name;
-        String bobTheCharacter;
-        String userCode;
-        String outputCode;
+        String userCode = "";
 
         //integers
         int i;
-        int i2;
-        int guesses = 999999999;
-        int codeLength = 4;
-        int x = 0;
+        int guesses = 10;
 
         //booleans
         boolean wrongInput = false;
 
         //the (string) array for the colors
-        String[] colors = {"R", "G", "B", "Y", "P", "O", "C"};
 
         //imports
         Scanner sc = new Scanner(System.in);
-        Random r = new Random();
 
         //functions
         Generator gen = new Generator();
-        Guesser guesser = new Guesser();
+        Evaluator eval = new Evaluator();
 
         //code generator
-        StringBuilder secretCode = gen.getLetter(colors, codeLength);
+        String secretCode = gen.getCode(eval.colors, eval.codeLength);
 
         //welcome message
         System.out.println("""
@@ -42,7 +35,7 @@ public class MasterMind2 {
                 """);
 
         //player enters name
-        name = "e";
+        name = sc.next();
 
         //shows code if name is Admin
         if (name.equals("Admin") || name.equals("admin")) {
@@ -57,21 +50,26 @@ public class MasterMind2 {
 
             //the amount of guesses left message
             System.out.println("\r\nGuess: " + (i + 1) + "/" + guesses + "\r\n" +
-                    "Please Choose Out Of Any Of The Following Colors: \r\n" + Arrays.toString(colors));
-            //userCode = sc.nextLine();
+                    "Please Choose Out Of Any Of The Following Colors: \r\n" + Arrays.toString(eval.colors) + "\r\n");
 
-            //computer guesses
-            userCode = String.valueOf(guesser.guess(colors, codeLength));
-            System.out.println(userCode);
+            //player guesses and checks for valid characters
+            boolean isValid = false;
 
-            try {
-                // Pause for 10 milliseconds
-                Thread.sleep(0);
-            } catch (InterruptedException e) {
-                System.err.println("Thread interrupted: " + e.getMessage());
-                // Optionally exit the loop if needed
-                break;
+            while (!isValid) {
+                userCode = sc.next().toUpperCase();
+
+                if (!eval.checkCode(userCode)) {
+                    System.out.println("ERROR... Please Enter VALID Numbers");
+                } else {
+                    isValid = true;
+                }
             }
+
+
+
+//            //computer guesses
+//            userCode = String.valueOf(gen.getCode(colors, codeLength));
+//            System.out.println(userCode);
 
             //validates lowercase input
             userCode = userCode.toUpperCase();
@@ -84,53 +82,14 @@ public class MasterMind2 {
             }
 
             //error if text is not equal to the code length
-            if (userCode.length() != codeLength) {
+            if (userCode.length() != eval.codeLength) {
                 System.out.println("\r\nERROR\r\n" +
-                        "Please Enter A Code With At Least " + codeLength + " Characters Long\r\n");
+                        "Please Enter A Code With At Least " + eval.codeLength + " Characters Long\r\n");
                 i--;
                 continue;
             }
-
-            //makes sure evaluation code does not print multiple times
-            outputCode = "";
-
             //code evaluation
-            for (i2 = 0; i2 < codeLength; i2++) {
-
-                //converts a string into a character
-                bobTheCharacter = "" + userCode.charAt(i2);
-
-                //checks if code has ONLY valid letter pt. 1
-                if (Arrays.asList(colors).contains(bobTheCharacter)) {
-
-                    //checks if user code is in the right place and the right character
-                    if (secretCode.charAt(i2) == userCode.charAt(i2)) {
-                        outputCode = outputCode + "B";
-                    }
-
-                    //checks if user code is the right character but not in the right spot
-                    else if(secretCode.toString().contains(bobTheCharacter)) {
-                        outputCode = outputCode + "W";
-                    }
-
-                    //checks if the user code is not in the right place nor in the right spot
-                    else {
-                        outputCode = outputCode + "-";
-                    }
-                }
-
-                //checks if code has ONLY valid letter pt. 2
-                else {
-                    wrongInput = true;
-                    System.out.println("""
-                            \r
-                            ERROR\r
-                            Please Enter Valid Letters!\r
-                            """);
-                    i--;
-                    continue outerLoop;
-                }
-            }
+            String outputCode = eval.evaluate(eval.codeLength, userCode, secretCode, eval.colors);
 
             //prints evaluation code
             System.out.println("\r\n" + outputCode);
