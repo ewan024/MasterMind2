@@ -13,10 +13,8 @@ public class MasterMind2 {
         int i;
         int guesses = 10;
 
-        //booleans
-        boolean wrongInput = false;
-
-        //the (string) array for the colors
+        //byte
+        byte choice = 0;
 
         //imports
         Scanner sc = new Scanner(System.in);
@@ -26,7 +24,7 @@ public class MasterMind2 {
         Evaluator eval = new Evaluator();
 
         //code generator
-        String secretCode = gen.getCode(eval.colors, eval.codeLength);
+        String secretCode = gen.getCode();
 
         //welcome message
         System.out.println("""
@@ -45,8 +43,40 @@ public class MasterMind2 {
         //start message
         System.out.println("Hello, " + name + "! Lets Start The Game!");
 
+        System.out.println("choose one or two");
+        choice = sc.nextByte();
+        outerloop: while (choice != 1 || choice != 2) {
+            switch (choice) {
+                case 1:
+                    break outerloop;
+                case 2:
+                    guesses = 999999999;
+                    for (i = 0; i < guesses; i++) {
+                        //computer guesses
+                        userCode = gen.getCode();
+                        System.out.println(userCode);
+
+                        //validates lowercase input
+                        userCode = userCode.toUpperCase();
+
+                        //checks if code is correct to the secret code
+                        if (secretCode.equals(userCode)) {
+                            System.out.println("Good Job Computer!\r\n" +
+                                    "Code Was: " + secretCode);
+                            sc.close();
+                            return;
+                        }
+                    }
+                    break;
+                default:
+                    System.out.println("try again please...");
+                    choice = sc.nextByte();
+            }
+
+        }
+
         //beginning game, defines the outside of the loop
-        outerLoop: for (i = 0; i < guesses; i++) {
+        for (i = 0; i < guesses; i++) {
 
             //the amount of guesses left message
             System.out.println("\r\nGuess: " + (i + 1) + "/" + guesses + "\r\n" +
@@ -65,17 +95,8 @@ public class MasterMind2 {
                 }
             }
 
-
-
-//            //computer guesses
-//            userCode = String.valueOf(gen.getCode(colors, codeLength));
-//            System.out.println(userCode);
-
-            //validates lowercase input
-            userCode = userCode.toUpperCase();
-
             //checks if code is correct to the secret code
-            if (secretCode.toString().equals(userCode)) {
+            if (secretCode.equals(userCode)) {
                 System.out.println("Wow! You Did It!");
                 sc.close();
                 return;

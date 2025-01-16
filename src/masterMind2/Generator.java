@@ -4,14 +4,15 @@ import java.util.Random;
 
 public class Generator {
     Random r = new Random();
-    public char random;
-    public String code = "";
+    public final String[] colors = {"R", "G", "B", "Y", "P", "O", "C"};
+    public final byte codeLength = 4;
 
-    boolean firstInput = true;
 
-    public String getCode(String[] colors, int repeat) {
+    public String getCode() {
 
-        for (int i = 0; i < repeat; i++) {
+        String code = "";
+
+        for (int i = 0; i < codeLength; i++) {
             int random = r.nextInt(colors.length); // Pick a random index
             code += colors[random];
         }
