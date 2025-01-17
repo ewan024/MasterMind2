@@ -45,10 +45,10 @@ public class MasterMind2 {
 
         System.out.println("choose one or two");
         choice = sc.nextByte();
-        outerloop: while (choice != 1 || choice != 2) {
+        outerLoop: while (true) {
             switch (choice) {
                 case 1:
-                    break outerloop;
+                    break outerLoop;
                 case 2:
                     guesses = 999999999;
                     for (i = 0; i < guesses; i++) {
